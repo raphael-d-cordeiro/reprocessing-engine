@@ -23,6 +23,7 @@ services:
     volumes:
       - "./.localstack:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./scripts/init-locastack.sh:/docker-entrypoint-initaws.d/init-locastack.sh"
 
   scanner:
     build: .
@@ -31,7 +32,7 @@ services:
       - nats
     environment:
       - NATS_URL=nats://nats-server:4222
-    command: ["/app/scanner"]
+    command: ["/app/main", "-app=scanner"]
     networks:
       - default
 
@@ -42,7 +43,7 @@ services:
       - nats
     environment:
       - NATS_URL=nats://nats-server:4222
-    command: ["/app/consumer"]
+    command: ["/app/main", "-app=consumer"]
     networks:
       - default
 

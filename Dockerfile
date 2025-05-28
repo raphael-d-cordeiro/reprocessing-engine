@@ -9,16 +9,14 @@ RUN go mod download
 
 COPY . .
 
-# Build binários separados para scanner e consumer
-RUN go build -o bin/scanner ./cmd/scanner
-RUN go build -o bin/consumer ./cmd/consumer
+# Build binário para o aplicativo
+RUN go build -o bin/main .
 
 FROM alpine:3.21
 
 WORKDIR /app
 
-COPY --from=builder /app/bin/scanner /app/scanner
-COPY --from=builder /app/bin/consumer /app/consumer
+COPY --from=builder /app/bin/main /app/main
 
 ENV TZ=America/Sao_Paulo
 
