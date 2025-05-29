@@ -11,7 +11,7 @@ import (
 	"syscall"
 
 	"reprocessing-engine/cmd/consumer"
-	"reprocessing-engine/cmd/scanner"
+	"reprocessing-engine/cmd/scheduler"
 )
 
 func main() {
@@ -29,7 +29,7 @@ func main() {
 
 	switch *appType {
 	case "scanner":
-		scanner.RunScanner(ctx)
+		scheduler.RunScanner(ctx)
 	case "consumer":
 		consumer.RunConsumer(ctx)
 	default:
