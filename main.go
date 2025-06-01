@@ -6,10 +6,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"os/signal"
 
-	"syscall"
-
+	"reprocessing-engine/cmd/api_order"
 	"reprocessing-engine/cmd/consumer"
 	"reprocessing-engine/cmd/scheduler"
 )
@@ -24,14 +22,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-	defer stop()
+	ctx := context.Background()
 
 	switch *appType {
 	case "scanner":
 		scheduler.RunScanner(ctx)
 	case "consumer":
 		consumer.RunConsumer(ctx)
+	case "api_order":
+		api_order.Run(ctx)
 	default:
 		fmt.Printf("Error: unknown application type '%s'\n", *appType)
 		fmt.Println("Usage: ./reprocessing-engine -app=scanner|consumer")

@@ -1,4 +1,4 @@
-package scanner
+package api_order
 
 // OrderDTO representa o Data Transfer Object para Order (usado para transporte/serialização).
 type OrderDTO struct {
