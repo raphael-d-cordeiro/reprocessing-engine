@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"os"
 
-	"reprocessing-engine/cmd/api_order"
-	"reprocessing-engine/cmd/consumer"
-	"reprocessing-engine/cmd/scheduler"
+	"github.com/raphael-d-cordeiro/reprocessing-engine/cmd/api_order"
+	"github.com/raphael-d-cordeiro/reprocessing-engine/cmd/consumer"
+	"github.com/raphael-d-cordeiro/reprocessing-engine/cmd/scanner"
 )
 
 func main() {
@@ -18,7 +18,7 @@ func main() {
 
 	if *appType == "" {
 		fmt.Println("Error: must specify application type with -app flag")
-		fmt.Println("Usage: ./reprocessing-engine -app=scanner|consumer")
+		fmt.Println("Usage: ./github.com/raphael-d-cordeiro/reprocessing-engine -app=scanner|consumer")
 		os.Exit(1)
 	}
 
@@ -26,14 +26,14 @@ func main() {
 
 	switch *appType {
 	case "scanner":
-		scheduler.RunScanner(ctx)
+		scanner.Run(ctx)
 	case "consumer":
-		consumer.RunConsumer(ctx)
+		consumer.Run(ctx)
 	case "api_order":
 		api_order.Run(ctx)
 	default:
 		fmt.Printf("Error: unknown application type '%s'\n", *appType)
-		fmt.Println("Usage: ./reprocessing-engine -app=scanner|consumer")
+		fmt.Println("Usage: ./github.com/raphael-d-cordeiro/reprocessing-engine -app=scanner|consumer")
 		os.Exit(1)
 	}
 }

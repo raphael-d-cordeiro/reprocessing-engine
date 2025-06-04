@@ -9,6 +9,12 @@ import (
 )
 
 // Order represents a simplified mock order
+// @Description Order model
+// @Description Includes ID, status, and product key
+// @Description Used in API responses
+// @name Order
+// @tags orders
+// @produce json
 type Order struct {
 	ID         string `json:"id"`
 	Status     string `json:"status"`
@@ -21,6 +27,18 @@ type OrdersResponse struct {
 	TotalPages int     `json:"total_pages"`
 }
 
+// GetOrders godoc
+// @Summary Get mock orders
+// @Description Returns paginated mock orders by partnerKey
+// @Tags orders
+// @Accept  json
+// @Produce  json
+// @Param page query int true "Page number"
+// @Param partnerKey query string true "Partner Key"
+// @Success 200 {object} OrdersResponse
+// @Failure 400 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Router /orders [get]
 func GetOrders(c *gin.Context) {
 	ctx := c.Request.Context()
 	select {
@@ -36,11 +54,28 @@ func GetOrders(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid page parameter"})
 		return
 	}
+	partnerKey := c.Query("partnerKey")
+	if partnerKey == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "partnerKey is required"})
+		return
+	}
 
-	// Mock orders per page
-	orders := []Order{
-		{ID: "order-" + strconv.Itoa(page*10+1), Status: "waiting-for-integration", ProductKey: "PRD-001"},
-		{ID: "order-" + strconv.Itoa(page*10+2), Status: "waiting-for-integration", ProductKey: "PRD-002"},
+	// Simulate orders for different partnerKeys
+	var orders []Order
+	switch partnerKey {
+	case "foobank":
+		orders = []Order{
+			{ID: "foo-" + strconv.Itoa(page*10+1), Status: "waiting-for-integration", ProductKey: "FOO-123"},
+			{ID: "foo-" + strconv.Itoa(page*10+2), Status: "waiting-for-integration", ProductKey: "FOO-456"},
+		}
+	case "barbank":
+		orders = []Order{
+			{ID: "bar-" + strconv.Itoa(page*10+1), Status: "waiting-for-integration", ProductKey: "BAR-789"},
+			{ID: "bar-" + strconv.Itoa(page*10+2), Status: "waiting-for-integration", ProductKey: "BAR-101"},
+		}
+	default:
+		c.JSON(http.StatusNotFound, gin.H{"error": "partnerKey not recognized"})
+		return
 	}
 
 	c.JSON(http.StatusOK, OrdersResponse{

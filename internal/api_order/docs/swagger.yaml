@@ -1,0 +1,80 @@
+basePath: /api/v1
+definitions:
+  handler.Order:
+    description: Order model Includes ID, status, and product key Used in API responses
+    properties:
+      id:
+        type: string
+      product_key:
+        type: string
+      status:
+        type: string
+    type: object
+  handler.OrdersResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/handler.Order'
+        type: array
+      total_pages:
+        type: integer
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /orders:
+    get:
+      consumes:
+      - application/json
+      description: Returns paginated mock orders by partnerKey
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Partner Key
+        in: query
+        name: partnerKey
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.OrdersResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get mock orders
+      tags:
+      - orders
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

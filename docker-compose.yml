@@ -46,6 +46,20 @@ services:
     command: ["/app/main", "-app=consumer"]
     networks:
       - default
+  
+  api_order:
+    build: .
+    container_name: api-order
+    depends_on:
+      - nats
+      - localstack
+    environment:
+      - NATS_URL=nats://nats-server:4222
+      - AWS_ENDPOINT=http://localstack:4566
+      - AWS_REGION=us-east-1
+    command: ["/app/main", "-app=api-order"]
+    networks:
+      - default
 
 networks:
   default:
