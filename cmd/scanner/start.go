@@ -6,26 +6,14 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
+
+	"github.com/raphael-d-cordeiro/reprocessing-engine/internal/infra/httputil"
 )
 
 func StartScanner(ctx context.Context) {
 	// Initialize the scanner service
 	// This is where you would set up your scanner logic, e.g., scanning files, processing data, etc.
-	log.Println("Starting scanner service...")
-
-	// Simulate scanner work
-	for {
-		select {
-		case <-ctx.Done():
-			log.Println("Scanner service shutting down gracefully...")
-			return
-		default:
-			// Simulate scanning work
-			log.Println("Scanning data...")
-			time.Sleep(2 * time.Second) // Simulate work
-		}
-	}
+	httpClient := httputil.New("http://localhost:8080")
 }
 
 func Run(ctx context.Context) {
