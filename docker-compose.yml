@@ -24,6 +24,16 @@ services:
       - "./.localstack:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./scripts/init-locastack.sh:/docker-entrypoint-initaws.d/init-locastack.sh"
+  
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - default
 
   scanner:
     build: .
@@ -64,3 +74,5 @@ services:
 networks:
   default:
     name: dev-net
+volumes:
+  redis_data:

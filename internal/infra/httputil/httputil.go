@@ -18,7 +18,7 @@ type Client struct {
 	client    *http.Client
 }
 
-func NewClient(baseURL string) *Client {
+func New(baseURL string) *Client {
 	transport := &http.Transport{
 		MaxIdleConns:          500,
 		MaxIdleConnsPerHost:   300,

@@ -3,6 +3,7 @@ package order
 import (
 	"context"
 	"encoding/json"
+	"strconv"
 
 	"github.com/raphael-d-cordeiro/reprocessing-engine/internal/domain/order"
 	"github.com/raphael-d-cordeiro/reprocessing-engine/internal/domain/protocol/httpclient"
@@ -22,7 +23,7 @@ func (r *Service) RetrieveOrders(ctx context.Context, page int, partnerKey strin
 	params := httpclient.RequestParams{
 		Method:      "GET",
 		URL:         "/orders",
-		QueryParams: map[string]string{"page": string(page), "partner_key": partnerKey},
+		QueryParams: map[string]string{"page": strconv.Itoa(page), "partner_key": partnerKey},
 	}
 
 	response, err := r.HTTPClient.MakeRequest(ctx, params)
